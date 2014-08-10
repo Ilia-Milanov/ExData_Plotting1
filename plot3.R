@@ -1,0 +1,15 @@
+fulldata <- read.csv("household_power_consumption.txt", na.strings = "?", sep = ";")
+dates <- ((fulldata[, 1] == "1/2/2007") | (fulldata[, 1] == "2/2/2007"))
+interdata <- fulldata[dates, ]
+datetime <- strptime(paste(interdata[, 1], interdata[, 2]), "%d/%m/%Y %H:%M:%S")
+interdata[, 7] <- as.numeric(interdata[, 7])
+interdata[, 8] <- as.numeric(interdata[, 8])
+interdata[, 9] <- as.numeric(interdata[, 9])
+png(filename = "plot3.png")
+plot(datetime, interdata[, 7], type = "n", ylab = "Energy sub metering", xlab = "")
+lines(datetime, interdata[, 7])
+lines(datetime, interdata[, 8], col = "red")
+lines(datetime, interdata[, 9], col = "blue")
+legend("topright", lwd = 1, col = c("black", "blue", "red"), legend = c(
+    "Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+dev.off()
